@@ -1,0 +1,8 @@
+html,body,h1,h2,h3,h4,h5,h6,div,a,p,ol,ul,li,dl,dt,dd,article,img,figcaption,figure,fieldset,section,span,em,cite,
+table,thead,tbody,tfoot,tr,td,th,address,button,input,legend{margin:0;padding: 0}
+html,body,#app{height:100%}
+button{border:0;cursor: pointer}
+li{list-style: none}
+img{border:0}
+a{text-decoration: none}
+.blind{position: absolute;font-size: 0;line-height: 0;width:0;height:0;visibility: hidden;opacity: 0}

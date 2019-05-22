@@ -1,9 +1,11 @@
 <template>
     <div id="app">
         <gnb :routeURI="routeURI" />
-        <transition name="fade" mode="out-in">
-            <router-view/>
-        </transition>
+        <div class="container">
+            <transition name="fade" mode="out-in">
+                <router-view/>
+            </transition>
+        </div>
     </div>
 </template>
 
@@ -44,6 +46,10 @@
             {
                 label : '요금안내',
                 uri : '/price'
+            },
+            {
+                label : '사장님 페이지',
+                uri : '/owner'
             }
         ]
         async initLoad() {
@@ -69,5 +75,7 @@
         opacity: 0;
         transform: translateX(-5%);
     }
-
+.container{
+    padding:2%;
+}
 </style>

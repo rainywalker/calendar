@@ -28,7 +28,7 @@ nav{
         .routes{
             display: flex;
             li{
-                margin-left:2em;
+                margin-left:1.5em;
                 a{
                     display: inline-block;padding:10px 15px;
                     &.router-link-exact-active{background: red;border-radius: 20px;color:#fff;}

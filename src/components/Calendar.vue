@@ -129,8 +129,8 @@
         get daysInMonth () : Array<object> {
 
             const arr : any = [];
-            const  solarArray : Array<number> =  [];
-            const  lunarArray : Array<string> =  [];
+            const solarArray : Array<number> =  [];
+            const lunarArray : Array<string> =  [];
 
             for (let i=0; i<this.dateCtx.daysInMonth(); i++) {
 
@@ -162,7 +162,7 @@
                 })
             }
 
-            const solarMatch = solarArray.map((v:number) => {
+            const solarMatch : Array <string | undefined> = solarArray.map((v:number) => {
                 if (holidayData.solarDay.includes(v)) {
                     let valueToString = v.toString()
                     if (valueToString.length === 3) valueToString = `0${valueToString}`;

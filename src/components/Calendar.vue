@@ -1,6 +1,7 @@
 <template>
     <div class="calendarWrap">
         <div class="innerContent">
+
             <div class="years">
                 <button type="button" class="btn prev" @click="chageMonth(-1)"><i class="fas fa-chevron-left"></i></button>
                 <div class="tx">
@@ -14,16 +15,25 @@
                     <span class="days" :class="weekEnd(i)">{{day}}</span>
                 </li>
             </ul>
+
             <ul class="dates">
+
 
                 <li v-for="(blank, index) in firstDayOfMonth" :key="'_'+index">
                     <button type="button" class="skip">{{blank}}</button>
                 </li>
                 <li v-for="(item,idx) in daysInMonth" :key="idx">
                     <button type="button"
-                            class="dateNum" :class="[initActive(item),disabledDay(item),holidays(item)]"
+                            class="dateNum"
                             @click="selectFunc(item)">
-                        <span >{{item}}</span>
+                        <span :class="{
+                            isActive : item.isActive,
+                            disabled : item.disabled,
+                            week_sat : item.sat,
+                            week_sun : item.sun,
+                            week_holiday_solar : item.holidaySolar.indexOf(item.fullString) >= 0,
+                            week_holiday_lunar : item.holidayLunar.indexOf(item.lunarCalendar) >= 0
+                            }">{{item.day}}</span>
                     </button>
 
                 </li>
@@ -37,6 +47,7 @@
     import moment from 'moment';
     import 'moment-lunar';
     import "moment/locale/ko";
+    import DaysMonth from '@/lib/dayInMonthClass';
 
     interface i_weekObj {
         week_sat : boolean,
@@ -47,29 +58,12 @@
         solarDay :  Array<number>,
         lunarDay : Array<number>
     }
-    class Iterator {
-        _data: any;
 
-        [Symbol.iterator](){
-            return this
-        }
-        constructor(data : any) {
-            this._data = data
-
-        }
-        next() {
-            return {
-                done : this._data.length === 0,
-                value : this._data.shift()
-            }
-        }
-    }
     const holidayData : holidayData = {
         solarDay : [101,301,505,606,815,1003,1009,1225],
         lunarDay : [1230,101,102,408,814,815,816]
     };
 
-    const iteratorSolar = new Iterator(holidayData.solarDay);
 
     @Component
     export default class Calendar extends Vue {
@@ -79,10 +73,6 @@
         public days : Array <string> = ['일', '월', '화', '수', '목', '금', '토'];
         public isSelected : string =  `${this.initialYear}${this.initialMonth}${this.initialDate}`;
 
-        public holidayData : holidayData = {
-            solarDay : [101,301,505,606,815,1003,1009,1225],
-            lunarDay : [1230,101,102,408,814,815,816]
-        };
 
         weekEnd(num : number) : object{
 
@@ -98,71 +88,8 @@
             return weekObj
         }
 
-        iteratorLoop(iter : any, f : Function, lunar : string, solar : string) {
-
-            const weekObj : i_weekObj = {
-                week_sat : false,
-                week_sun : false,
-                week_holiday : false
-            };
-
-            while(true) {
-                const v = iter.next();
-                if(v.done) return;
-                if (solar === v.value) {
-                    console.log('x')
-                    weekObj.week_holiday = true
-                    return weekObj
-                }
-
-            }
-        }
-
-        holidays(item : number)  {
-
-            const currentDate = `${this.year}-${this.month}-${item}`;
-            const ctx = moment(currentDate,'YYYYMDD');
-            const lunar_stringExtract : string = ctx.lunar().format('YYYYMDD').substring(4);
-            const solar_stringExtract : string = ctx.solar().format('YYYYMDD').substring(4);
-
-            const weekObj : i_weekObj = {
-                week_sat : false,
-                week_sun : false,
-                week_holiday : false
-            };
-
-            if (ctx.day() === 0) weekObj.week_sat = true;
-            if(ctx.day() === 6) weekObj.week_sun = true;
-
-            // console.log(ctx.format('d'));
-
-            this.iteratorLoop(iteratorSolar,console.log,lunar_stringExtract,solar_stringExtract)
-
-
-
-
-            // this.holidayData.solarDay.forEach((v : number) => {
-            //
-            //     if (v.toString() === solar_stringExtract) {
-            //         weekObj.week_holiday = true
-            //     }
-            // });
-            // this.holidayData.lunarDay.forEach((v : number) => {
-            //     if (v.toString() === lunar_stringExtract) {
-            //         weekObj.week_holiday = true
-            //     }
-            // });
-            //
-            //
-            // return weekObj
-
-
-
-        }
-        selectFunc(item : number) : void {
-            const currentDate = `${this.year}-${this.month}-${item}`
-            const ctx = moment(currentDate,'YYYYMDD')
-            this.isSelected = ctx.format('YYYYMDD')
+        selectFunc(item : any) : void {
+            this.isSelected = item.fullString;
         }
 
         chageMonth(num : number) : void {
@@ -170,29 +97,6 @@
             num > 0 ? this.dateCtx = moment(this.dateCtx).add(1, 'month')
                 : this.dateCtx = moment(this.dateCtx).subtract(1, 'month');
 
-        }
-        initActive(item :  number) : object{
-            const currentDate = `${this.year}${this.month}${item}`;
-            return {
-                isActive : (this.isSelected === currentDate)
-            }
-
-        }
-        disabledDay(days : number)  {
-
-            let tempDays:string = days.toString();
-            if (days < 10) {
-                tempDays = `0${days}`;
-            }
-
-            const initialDate : number = parseInt(`${this.initialYear}${this.initialMonth}${this.currentDate}`);
-            const flexDate : number = parseInt(`${this.year}${this.month}${tempDays}`);
-
-            if (initialDate > flexDate) {
-                return {
-                    disabled:true
-                }
-            }
         }
         get year() : string {
             return this.dateCtx.format('Y')
@@ -220,9 +124,74 @@
 
             return this.today.format('Y');
         }
-        get daysInMonth () : number {
-            return this.dateCtx.daysInMonth();
+
+        get daysInMonth () : Array<object> {
+
+            const arr : any = [];
+            const  solarArray : Array<number> =  [];
+            const  lunarArray : Array<string> =  [];
+
+            for (let i=0; i<this.dateCtx.daysInMonth(); i++) {
+
+                let idx : any = i +1;
+
+                if (idx < 10) idx = '0' + idx;
+                else idx = '' + idx;
+
+                const currentDate : string = `${this.year}-${this.month}-${i+1}`;
+                const ctx : any = moment(currentDate,'YYYYMDD');
+                const dateCtxFormat : string = this.dateCtx.format('YMM'+idx);
+
+
+                const lunar_stringExtract : string = ctx.lunar().format('YYYYMDD').substring(4);
+                const solar_stringExtract : string = ctx.solar().format('YYYYMDD').substring(4);
+
+
+                solarArray.push(parseInt(solar_stringExtract));
+                lunarArray.push(lunar_stringExtract);
+
+                arr.push({
+                    lunarCalendar : parseInt(lunar_stringExtract.substr(1)),
+                    fullString : dateCtxFormat,
+                    day : parseInt(dateCtxFormat.substr(6),10),
+                    isActive : this.isSelected === dateCtxFormat,
+                    disabled : parseInt(`${this.initialYear}${this.initialMonth}${this.currentDate}`) > parseInt(`${this.year}${this.month}${idx}`),
+                    sat : ctx.day() === 0,
+                    sun : ctx.day() === 6,
+                    holidaySolar : [],
+                    holidayLunar : [],
+
+                })
+            }
+
+            const solarMatch = solarArray.map((v:number) => {
+                if (holidayData.solarDay.includes(v)) {
+                    let valueToString = v.toString()
+                    if (valueToString.length === 3) valueToString = `0${valueToString}`;
+
+                    valueToString = `${this.dateCtx.format('Y')}${valueToString}`;
+
+                    return valueToString
+                }
+            }).filter((v:any) => v !== undefined);
+
+
+            const lunarMatch = lunarArray.map((v:any) => {
+                if(holidayData.lunarDay.includes(parseInt(v))) {
+                    return parseInt(v.substr(1))
+                }
+            }).filter((v:any) => v !== undefined);
+
+
+            arr.forEach((v:any) => {
+                v.holidaySolar = solarMatch
+                v.holidayLunar = lunarMatch
+            });
+
+            return arr
+            // return this.dateCtx.daysInMonth();
         }
+
 
     }
 </script>
@@ -232,7 +201,7 @@
     width:50%;
     .week_sat{color:#FF4141}
     .week_sun{color:#0C71C0}
-    .week_holiday{color:#FF4141}
+    .week_holiday_solar,.week_holiday_lunar{color:#FF4141}
 
 
     .years{
@@ -256,6 +225,12 @@
                 span{background: #d71b5f;color:#fff;display: inline-block;border-radius: 100%;width:36px;height:36px;text-align: center;
                     line-height: 36px;position: absolute;top:50%;left:50%;margin:-18px 0 0 -18px}
             }
+
+
+            span.isActive{background: #d71b5f;color:#fff;display: inline-block;border-radius: 100%;width:36px;height:36px;text-align: center;
+                line-height: 36px;position: absolute;top:50%;left:50%;margin:-18px 0 0 -18px}
+            span.disabled{pointer-events: none;color:#aaa}
+
             .skip{visibility: hidden}
         }
     }

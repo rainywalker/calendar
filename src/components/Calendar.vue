@@ -70,7 +70,7 @@
                 disabled : item.disabled,
                 week_sat : item.sat,
                 week_sun : item.sun,
-                week_holiday_solar : item.holidaySolar.indexOf(item.fullString) >= 0,
+                week_holiday_solar : item.holidaySolar.indexOf(item.solarCalendar) >= 0,
                 week_holiday_lunar : item.holidayLunar.indexOf(item.lunarCalendar) >= 0
             }
         }
@@ -129,7 +129,7 @@
         get daysInMonth () : Array<object> {
 
             const arr : any = [];
-            const solarArray : Array<number> =  [];
+            const solarArray : Array<string> =  [];
             const lunarArray : Array<string> =  [];
 
             for (let i=0; i<this.dateCtx.daysInMonth(); i++) {
@@ -146,11 +146,12 @@
                 const lunar_stringExtract : string = ctx.lunar().format('YYYYMDD').substring(4);
                 const solar_stringExtract : string = ctx.solar().format('YYYYMDD').substring(4);
 
-                solarArray.push(parseInt(solar_stringExtract));
+                solarArray.push(solar_stringExtract);
                 lunarArray.push(lunar_stringExtract);
 
                 arr.push({
                     lunarCalendar : parseInt(lunar_stringExtract.substr(1)),
+                    solarCalendar : parseInt(solar_stringExtract.substr(1)),
                     fullString : dateCtxFormat,
                     day : parseInt(dateCtxFormat.substr(6),10),
                     isActive : this.isSelected === dateCtxFormat,
@@ -162,28 +163,20 @@
                 })
             }
 
-            const solarMatch : Array <string | undefined> = solarArray.map((v:number) => {
-                if (holidayData.solarDay.includes(v)) {
-                    let valueToString = v.toString()
-                    if (valueToString.length === 3) valueToString = `0${valueToString}`;
+            const holidayMatch = (arr : Array<string>, data : Array<number>) : Array<any> => {
+                return arr.map((v:string) => {
+                    if(data.includes(parseInt(v))) {
+                        return parseInt(v.substr(1))
+                    }
+                }).filter((v : number | undefined) => v !== undefined)
+            };
 
-                    valueToString = `${this.dateCtx.format('Y')}${valueToString}`;
-
-                    return valueToString
-                }
-            }).filter((v:string | undefined) => v !== undefined);
-
-
-            const lunarMatch : Array <number | undefined> = lunarArray.map((v:string) => {
-                if(holidayData.lunarDay.includes(parseInt(v))) {
-                    return parseInt(v.substr(1))
-                }
-            }).filter((v:number | undefined) => v !== undefined);
-
+            const solarMatch : Array <number> = holidayMatch(solarArray,holidayData.solarDay);
+            const lunarMatch : Array <number> = holidayMatch(lunarArray,holidayData.lunarDay);
 
             arr.forEach((v:any) => {
-                v.holidaySolar = solarMatch
-                v.holidayLunar = lunarMatch
+                v.holidaySolar = solarMatch;
+                v.holidayLunar = lunarMatch;
             });
 
             return arr

@@ -17,23 +17,15 @@
             </ul>
 
             <ul class="dates">
-
-
                 <li v-for="(blank, index) in firstDayOfMonth" :key="'_'+index">
                     <button type="button" class="skip">{{blank}}</button>
                 </li>
                 <li v-for="(item,idx) in daysInMonth" :key="idx">
                     <button type="button"
                             class="dateNum"
+                            :class="behaviorDay(item)"
                             @click="selectFunc(item)">
-                        <span :class="{
-                            isActive : item.isActive,
-                            disabled : item.disabled,
-                            week_sat : item.sat,
-                            week_sun : item.sun,
-                            week_holiday_solar : item.holidaySolar.indexOf(item.fullString) >= 0,
-                            week_holiday_lunar : item.holidayLunar.indexOf(item.lunarCalendar) >= 0
-                            }">{{item.day}}</span>
+                        <span>{{item.day}}</span>
                     </button>
 
                 </li>
@@ -47,7 +39,6 @@
     import moment from 'moment';
     import 'moment-lunar';
     import "moment/locale/ko";
-    import DaysMonth from '@/lib/dayInMonthClass';
 
     interface i_weekObj {
         week_sat : boolean,
@@ -64,7 +55,6 @@
         lunarDay : [1230,101,102,408,814,815,816]
     };
 
-
     @Component
     export default class Calendar extends Vue {
         private dateCtx : any = moment();
@@ -73,7 +63,17 @@
         public days : Array <string> = ['일', '월', '화', '수', '목', '금', '토'];
         public isSelected : string =  `${this.initialYear}${this.initialMonth}${this.initialDate}`;
 
+        behaviorDay(item:any) : object {
 
+            return {
+                isActive : item.isActive,
+                disabled : item.disabled,
+                week_sat : item.sat,
+                week_sun : item.sun,
+                week_holiday_solar : item.holidaySolar.indexOf(item.fullString) >= 0,
+                week_holiday_lunar : item.holidayLunar.indexOf(item.lunarCalendar) >= 0
+            }
+        }
         weekEnd(num : number) : object{
 
             const weekObj : i_weekObj = {
@@ -90,6 +90,7 @@
 
         selectFunc(item : any) : void {
             this.isSelected = item.fullString;
+
         }
 
         chageMonth(num : number) : void {
@@ -142,10 +143,8 @@
                 const ctx : any = moment(currentDate,'YYYYMDD');
                 const dateCtxFormat : string = this.dateCtx.format('YMM'+idx);
 
-
                 const lunar_stringExtract : string = ctx.lunar().format('YYYYMDD').substring(4);
                 const solar_stringExtract : string = ctx.solar().format('YYYYMDD').substring(4);
-
 
                 solarArray.push(parseInt(solar_stringExtract));
                 lunarArray.push(lunar_stringExtract);
@@ -160,7 +159,6 @@
                     sun : ctx.day() === 6,
                     holidaySolar : [],
                     holidayLunar : [],
-
                 })
             }
 
@@ -173,14 +171,14 @@
 
                     return valueToString
                 }
-            }).filter((v:any) => v !== undefined);
+            }).filter((v:string | undefined) => v !== undefined);
 
 
-            const lunarMatch = lunarArray.map((v:any) => {
+            const lunarMatch : Array <number | undefined> = lunarArray.map((v:string) => {
                 if(holidayData.lunarDay.includes(parseInt(v))) {
                     return parseInt(v.substr(1))
                 }
-            }).filter((v:any) => v !== undefined);
+            }).filter((v:number | undefined) => v !== undefined);
 
 
             arr.forEach((v:any) => {

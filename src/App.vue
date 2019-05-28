@@ -55,7 +55,7 @@
         async initLoad() {
             try {
                 const result = await axios.get('/DFSROOT/POINT/DATA/top.json.txt');
-                console.log(result.data)
+
 
             }
             catch (e) {

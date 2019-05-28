@@ -1,0 +1,26 @@
+library identifier: 'yanolja-pipeline-library', changelog: false
+
+def awsProfile = 'dev'
+def destinationBucket = 'yanolja-dev-image-bucket/ybs-dev.yanolja.com '
+def applicationPath = 'dist/'
+def distributionId = 'E3G09PWAMGLN5M'
+
+publishBasePipeline slackChannels: ['#zin_ps_jenkins'], {
+    stage('Build') {
+            docker.image('node:10').inside('-v /etc/localtime:/etc/localtime:ro') {
+                    sh """
+                        npm install \
+                        && npm run build
+                    """
+                }
+    }
+    stage('Publish files') {
+        withAWS([region: 'ap-northeast-2']) {
+            sh """
+                export AWS_PROFILE=${awsProfile} \
+                && aws s3 sync ${applicationPath} s3://${destinationBucket} --delete \
+                && aws cloudfront create-invalidation --distribution-id ${distributionId} --paths "/*"
+            """
+        }
+    }
+}

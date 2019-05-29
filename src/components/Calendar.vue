@@ -39,18 +39,9 @@
     import moment from 'moment';
     import 'moment-lunar';
     import "moment/locale/ko";
+    import * as calendar from '@/interface/calendar.ts';
 
-    interface i_weekObj {
-        week_sat : boolean,
-        week_sun : boolean,
-        week_holiday? : boolean
-    }
-    interface holidayData {
-        solarDay :  Array<number>,
-        lunarDay : Array<number>
-    }
-
-    const holidayData : holidayData = {
+    const holidayData : calendar.holidayData = {
         solarDay : [101,301,505,606,815,1003,1009,1225],
         lunarDay : [1230,101,102,408,814,815,816]
     };
@@ -63,7 +54,7 @@
         public days : Array <string> = ['일', '월', '화', '수', '목', '금', '토'];
         public isSelected : string =  `${this.initialYear}${this.initialMonth}${this.initialDate}`;
 
-        behaviorDay(item:any) : object {
+        behaviorDay(item:any) : calendar.isHoliday {
 
             return {
                 isActive : item.isActive,
@@ -74,9 +65,9 @@
                 week_holiday_lunar : item.holidayLunar.indexOf(item.lunarCalendar) >= 0
             }
         }
-        weekEnd(num : number) : object{
+        weekEnd(num : number) : calendar.i_weekObj {
 
-            const weekObj : i_weekObj = {
+            const weekObj : calendar.i_weekObj = {
                 week_sat : false,
                 week_sun : false
             };
@@ -84,20 +75,14 @@
             if (num === 0) weekObj.week_sat = true;
             if (num === 6) weekObj.week_sun = true;
 
-
             return weekObj
         }
-
         selectFunc(item : any) : void {
             this.isSelected = item.fullString;
-
         }
-
         chageMonth(num : number) : void {
-
             num > 0 ? this.dateCtx = moment(this.dateCtx).add(1, 'month')
                 : this.dateCtx = moment(this.dateCtx).subtract(1, 'month');
-
         }
         get year() : string {
             return this.dateCtx.format('Y')
@@ -126,7 +111,7 @@
             return this.today.format('Y');
         }
 
-        get daysInMonth () : Array<object> {
+        get daysInMonth () : Array<calendar.dataInDays> {
 
             const arr : any = [];
             const solarArray : Array<string> =  [];

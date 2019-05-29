@@ -44,10 +44,6 @@
                 uri : '/getReserved'
             },
             {
-                label : '요금안내',
-                uri : '/price'
-            },
-            {
                 label : '사장님 페이지',
                 uri : '/owner'
             }

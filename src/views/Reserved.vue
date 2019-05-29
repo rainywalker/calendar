@@ -1,19 +1,19 @@
 <template>
     <div id="reservedWrap">
-        <div class="calendar">
-            <calendar />
-
-        </div>
+        <calendar />
+        <Room-list />
     </div>
 </template>
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
     import Calendar from '@/components/Calendar.vue';
+    import RoomList from '@/components/RoomList.vue';
 
     @Component({
         components : {
-            Calendar
+            Calendar,
+            RoomList
         }
     })
     export default class Reserved extends Vue {

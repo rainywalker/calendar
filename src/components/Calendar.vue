@@ -52,7 +52,7 @@
         private today : any = moment();
 
         public days : Array <string> = ['일', '월', '화', '수', '목', '금', '토'];
-        public isSelected : string =  `${this.initialYear}${this.initialMonth}${this.initialDate}`;
+        public isSelected : string =  `${this.initialYear}-${this.initialMonth}-${this.initialDate}`;
 
         behaviorDay(item:any) : calendar.isHoliday {
 
@@ -79,6 +79,7 @@
         }
         selectFunc(item : any) : void {
             this.isSelected = item.fullString;
+
         }
         chageMonth(num : number) : void {
             num > 0 ? this.dateCtx = moment(this.dateCtx).add(1, 'month')
@@ -126,10 +127,13 @@
 
                 const currentDate : string = `${this.year}-${this.month}-${i+1}`;
                 const ctx : any = moment(currentDate,'YYYYMDD');
-                const dateCtxFormat : string = this.dateCtx.format('YMM'+idx);
+                const dateCtxFormat : string = this.dateCtx.format('Y-MM-'+idx);
+
+
 
                 const lunar_stringExtract : string = ctx.lunar().format('YYYYMDD').substring(4);
                 const solar_stringExtract : string = ctx.solar().format('YYYYMDD').substring(4);
+
 
                 solarArray.push(solar_stringExtract);
                 lunarArray.push(lunar_stringExtract);
@@ -138,7 +142,7 @@
                     lunarCalendar : parseInt(lunar_stringExtract.substr(1)),
                     solarCalendar : parseInt(solar_stringExtract.substr(1)),
                     fullString : dateCtxFormat,
-                    day : parseInt(dateCtxFormat.substr(6),10),
+                    day : parseInt(dateCtxFormat.substr(8),10),
                     isActive : this.isSelected === dateCtxFormat,
                     disabled : parseInt(`${this.initialYear}${this.initialMonth}${this.currentDate}`) > parseInt(`${this.year}${this.month}${idx}`),
                     sat : ctx.day() === 0,

@@ -5,7 +5,18 @@
             <li v-for="item in checkRooms" :key="item.id">
                 <div class="roomObject">
                     <check-box :item="item" :checked="checkRoomList.includes(item)" @change="onChange"></check-box>
-
+                    <div class="roomInfo">
+                        <figure>
+                            <img src="" alt="">
+                        </figure>
+                        <dl>
+                            <dt>스탄다드스스파</dt>
+                            <dd>
+                                <p>17평</p>
+                                <p></p>
+                            </dd>
+                        </dl>
+                    </div>
                 </div>
 
             </li>

@@ -16,8 +16,8 @@
             </dl>
             <select-count>
                 <dt slot="dt">객실수</dt>
-                <option value="d">1개</option>
-                <option value="d">2개</option>
+                <option value="d1">1개</option>
+                <option value="d2">2개</option>
             </select-count>
             <div class="headCount">
                 <stay-head-count />

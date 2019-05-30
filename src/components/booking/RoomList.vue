@@ -1,37 +1,24 @@
 <template>
     <div class="roomList">
         <h2>객실선택</h2>
-        <ul>
+        {{checkRoomList}}
+        <ul class="lst">
             <li v-for="item in checkRooms" :key="item.id">
-                <div class="roomObject">
-                    <check-box :item="item" :checked="checkRoomList.includes(item)" @change="onChange"></check-box>
-                    <div class="roomInfo">
-                        <figure>
-                            <img src="" alt="">
-                        </figure>
-                        <dl>
-                            <dt>스탄다드스스파</dt>
-                            <dd>
-                                <p>17평</p>
-                                <p></p>
-                            </dd>
-                        </dl>
-                    </div>
-                </div>
-
+                <room-type :item="item" :checked="checkRoomList.includes(item)" @onChange="onChange"></room-type>
             </li>
         </ul>
-        {{checkRoomList}}
+
     </div>
 </template>
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator'
-    import CheckBox from '@/components/form/CheckBox.vue';
+    import RoomType from '@/components/booking/RoomType.vue'
+
 
     @Component({
         components : {
-            CheckBox
+            RoomType,
         }
     })
     export default class RoomList extends Vue {
@@ -40,7 +27,6 @@
             { id: 0, text: 'filter_a' },
             { id: 1, text: 'filter_b' },
             { id: 2, text: 'filter_c' },
-            { id: 3, text: 'filter_d' },
         ];
 
         onChange({item,isChecked}:any) {
@@ -56,6 +42,9 @@
 <style scoped lang="scss">
 .roomList{
     margin-top:42px;
+    .lst{margin-top:20px;border-top:1px solid #929292}
+    li{border-bottom:1px solid #e5e5e5;padding:15px 0}
+
 }
 
 </style>

@@ -7,8 +7,8 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import Calendar from '@/components/Calendar.vue';
-    import RoomList from '@/components/RoomList.vue';
+    import Calendar from '@/components/booking/Calendar.vue';
+    import RoomList from '@/components/booking/RoomList.vue';
 
     @Component({
         components : {
@@ -16,7 +16,7 @@
             RoomList
         }
     })
-    export default class Reserved extends Vue {
+    export default class Booking extends Vue {
 
 
 

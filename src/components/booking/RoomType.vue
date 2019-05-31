@@ -1,5 +1,6 @@
 <template>
     <div class="roomObject">
+
         <check-box :item="item" class="chk" :checked="checked" @change="onChange"></check-box>
         <div class="roomInfo">
             <div class="thumb">
@@ -14,13 +15,30 @@
                     <p>기준 2명/최대 2</p>
                 </dd>
             </dl>
-            <select-count>
-                <dt slot="dt">객실수</dt>
-                <option value="d1">1개</option>
-                <option value="d2">2개</option>
-            </select-count>
+            <dl>
+                <dt>객실수</dt>
+                <dd>
+                    <select-box v-model="selected" @input="selectedValue">
+                        <option v-for="(v,i) in optionsValue" :key="i" :value="v">{{v}}개</option>
+                    </select-box>
+
+                </dd>
+            </dl>
             <div class="headCount">
-                <stay-head-count />
+                <table class="cntTable">
+                    <thead>
+                    <tr>
+                        <th>기간</th>
+                        <th>성인</th>
+                        <th>아동</th>
+                        <th>유아</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <stay-head-count></stay-head-count>
+                    </tbody>
+                </table>
+
             </div>
             <p class="totalPrice">222,220원</p>
 
@@ -29,15 +47,19 @@
 </template>
 
 <script lang="ts">
-    import {Component, Prop,Emit,Vue} from 'vue-property-decorator';
+    import {Component, Prop,Emit, Vue} from 'vue-property-decorator';
+    import {Mutation} from 'vuex-class'
     import CheckBox from '@/components/form/CheckBox.vue';
     import StayHeadCount from '@/components/booking/StayHeadCount.vue'
-    import SelectCount from '@/components/booking/SelectCount.vue'
+    import SelectBox from '@/components/form/SelectBox.vue';
+
+    const namespace: string = 'booking';
+
 
     @Component({
         components : {
             StayHeadCount,
-            SelectCount,
+            SelectBox,
             CheckBox
         }
     })
@@ -45,12 +67,20 @@
         @Prop({type:Object, required:true, default : {}}) item!:any;
         @Prop({type:Boolean, required:true, default : false }) checked!:boolean;
 
-        @Emit('onChange')
+        @Mutation('rommTypeDeal',{namespace}) storeRoomTypeDeal : any;
+
+
+        private selected : string = '1';
+
+        public optionsValue = ['1','2']
+
+        selectedValue(v : string) {
+            console.log(v)
+            this.selected = v
+        }
         onChange({item,isChecked}:any) {
-            return {
-                item,
-                isChecked
-            }
+            this.storeRoomTypeDeal({item,isChecked})
+
         }
 
     }
@@ -60,7 +90,7 @@
     .roomObject{
         display: flex;align-items: center;
         .roomInfo {
-            display: flex;align-items: center;
+            display: flex;align-items: center;justify-content: space-between;
             .thumb{
                 width:140px;height:84px;overflow: hidden;box-sizing: border-box;
                 position: relative;margin-left:10px;
@@ -72,7 +102,10 @@
             .specs{margin-left:20px}
         }
         .headCount{
-            display:flex;align-items: center;flex-wrap:wrap;
+
+            .cntTable{
+
+            }
 
         }
 

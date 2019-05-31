@@ -1,16 +1,23 @@
 <template>
     <div class="select">
-        <select name="" id="">
+        <select @change="onChange($event.target.value)">
             <slot></slot>
         </select>
     </div>
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from 'vue-property-decorator';
+    import {Component, Model, Prop, Vue} from 'vue-property-decorator';
 
     @Component
     export default class SelectBox extends Vue{
+        @Model('change',{type:String}) value! : string
+        private selectValue : string = '1'
+        onChange(v : string) {
+            this.selectValue = v;
+            this.$emit('input',this.selectValue)
+        }
+
 
     }
 </script>

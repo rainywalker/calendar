@@ -72,6 +72,6 @@
         transform: translateX(-5%);
     }
 .container{
-    padding:2%;
+    max-width:1200px;margin:2% auto;
 }
 </style>

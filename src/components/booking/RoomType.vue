@@ -1,7 +1,7 @@
 <template>
     <div class="roomObject">
 
-        <check-box :item="item" class="chk" :checked="checked" @change="onChange"></check-box>
+        <check-box :item="item" class="chk" :checked="checked" @change="checkedValue"></check-box>
         <div class="roomInfo">
             <div class="thumb">
                 <figure class="centered">
@@ -15,10 +15,10 @@
                     <p>기준 2명/최대 2</p>
                 </dd>
             </dl>
-            <dl>
+            <dl class="roomCount">
                 <dt>객실수</dt>
                 <dd>
-                    <select-box v-model="selected" @input="selectedValue">
+                    <select-box v-model="selected" @input="roomCount">
                         <option v-for="(v,i) in optionsValue" :key="i" :value="v">{{v}}개</option>
                     </select-box>
 
@@ -38,7 +38,6 @@
                         <stay-head-count></stay-head-count>
                     </tbody>
                 </table>
-
             </div>
             <p class="totalPrice">222,220원</p>
 
@@ -70,15 +69,15 @@
         @Mutation('rommTypeDeal',{namespace}) storeRoomTypeDeal : any;
 
 
-        private selected : string = '1';
+        private selected : number = 1;
 
-        public optionsValue = ['1','2']
+        public optionsValue = [1,2]
 
-        selectedValue(v : string) {
+        roomCount(v : number) {
             console.log(v)
             this.selected = v
         }
-        onChange({item,isChecked}:any) {
+        checkedValue({item,isChecked}:any) {
             this.storeRoomTypeDeal({item,isChecked})
 
         }
@@ -89,11 +88,13 @@
 <style scoped lang="scss">
     .roomObject{
         display: flex;align-items: center;
+        .chk{}
         .roomInfo {
-            display: flex;align-items: center;justify-content: space-between;
+            display: flex;align-items: center;width:100%;justify-content: space-between;
             .thumb{
                 width:140px;height:84px;overflow: hidden;box-sizing: border-box;
                 position: relative;margin-left:10px;
+                &:after{display: block;position: absolute;left:0;top:0;right:0;bottom:0;border:1px solid rgba(0,0,0,.2);z-index: 1;content: ''}
                 .centered {
                     position: absolute; top: 0; left: 0; right: 0; bottom: 0; -webkit-transform: translate(50%,50%); -ms-transform: translate(50%,50%); transform: translate(50%,50%);
                     img{position: absolute; top: 0; left: 0; max-width: 100%; height: auto; -webkit-transform: translate(-50%,-50%); -ms-transform: translate(-50%,-50%); transform: translate(-50%,-50%);}
@@ -101,13 +102,16 @@
             }
             .specs{margin-left:20px}
         }
+        .roomCount{
+            dt{text-align: center;padding-bottom:10px}
+        }
         .headCount{
-
+            width:50%;
             .cntTable{
+                width:100%;
+                th{text-align: center;padding-bottom:10px}
 
             }
-
         }
-
     }
 </style>

@@ -1,5 +1,6 @@
 <template>
     <div class="select">
+
         <select @change="onChange($event.target.value)">
             <slot></slot>
         </select>
@@ -10,12 +11,12 @@
     import {Component, Model, Prop, Vue} from 'vue-property-decorator';
 
     @Component
-    export default class SelectBox extends Vue{
-        @Model('change',{type:String}) value! : string
-        private selectValue : string = '1'
+    export default class SelectBox extends Vue {
+        @Model('change',{ type : Number, default : 1 }) value! : number;
+
+
         onChange(v : string) {
-            this.selectValue = v;
-            this.$emit('input',this.selectValue)
+            this.$emit('input',parseInt(v))
         }
 
 

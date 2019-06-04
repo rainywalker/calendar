@@ -1,5 +1,5 @@
 <template>
-    <tr>
+    <tr class="stayHeadCount">
         <td>
             <select-box v-model="selected" @input="stayCount">
                 <option v-for="(v,i) in stayCountData" :key="i" :value="v">{{v}}박</option>
@@ -35,10 +35,15 @@
 </script>
 
 <style scoped lang="scss">
-
     td{text-align: center}
     .textField{padding:0 10px;border-radius: 2px;height:34px;border:1px solid #dbdbdb;box-sizing: border-box;
         font-size:15px;width:7rem;text-align: center}
+    .stayHeadCount{
+        &:first-child{
+            td{padding-top:0}
+        }
+        td{padding-top:15px}
+    }
 
 
 </style>

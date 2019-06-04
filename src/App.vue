@@ -12,7 +12,7 @@
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
     import Gnb from '@/components/Gnb.vue';
-    import axios from '@/lib/axios';
+
 
     interface uri {
         label : string,
@@ -26,10 +26,7 @@
     })
     export default class App extends Vue {
 
-        public $http: any;
-        private created() {
-            this.initLoad()
-        }
+
         private routeURI : Array<uri> = [
             {
                 label : '예약달력',
@@ -48,16 +45,7 @@
                 uri : '/owner'
             }
         ]
-        async initLoad() {
-            try {
-                const result = await axios.get('/DFSROOT/POINT/DATA/top.json.txt');
 
-
-            }
-            catch (e) {
-
-            }
-        }
 
     }
 </script>

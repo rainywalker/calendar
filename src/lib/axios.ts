@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseURL : '/api',
+    baseURL : 'http://ybs-api.dev.yanolja.in/v1',
 })

@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from 'vue-property-decorator';
+    import {Component, Vue, Emit} from 'vue-property-decorator';
     import moment from 'moment';
     import 'moment-lunar';
     import "moment/locale/ko";
@@ -48,6 +48,9 @@
 
     @Component
     export default class Calendar extends Vue {
+
+
+
         private dateCtx : any = moment();
         private today : any = moment();
 
@@ -77,9 +80,10 @@
 
             return weekObj
         }
-        selectFunc(item : any) : void {
+        @Emit()
+        selectFunc(item : any) : string {
             this.isSelected = item.fullString;
-
+            return this.isSelected
         }
         chageMonth(num : number) : void {
             num > 0 ? this.dateCtx = moment(this.dateCtx).add(1, 'month')

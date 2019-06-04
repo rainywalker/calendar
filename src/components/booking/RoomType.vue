@@ -9,17 +9,17 @@
                 </figure>
             </div>
             <dl class="specs">
-                <dt>스탄다드스스파</dt>
+                <dt>{{item.name}}</dt>
                 <dd>
-                    <p>17평</p>
-                    <p>기준 2명/최대 2</p>
+                    <p>{{parseInt(item.roomSize * 0.3025,10)}}평</p>
+                    <p>기준 {{item.minOccupancy}}명/최대 {{item.maxOccupancy}}</p>
                 </dd>
             </dl>
             <dl class="roomCount">
                 <dt>객실수</dt>
                 <dd>
                     <select-box v-model="selected" @input="roomCount">
-                        <option v-for="(v,i) in optionsValue" :key="i" :value="v">{{v}}개</option>
+                        <option v-for="n in item.rate.availability" :key="n" :value="n">{{n}}개</option>
                     </select-box>
 
                 </dd>
@@ -35,11 +35,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <stay-head-count></stay-head-count>
+                        <stay-head-count  v-for="n in selected" :key="n"></stay-head-count>
                     </tbody>
                 </table>
             </div>
-            <p class="totalPrice">222,220원</p>
+            <p class="totalPrice">{{item.rate.salePrice}}원</p>
 
         </div>
     </div>
@@ -74,7 +74,7 @@
         public optionsValue = [1,2]
 
         roomCount(v : number) {
-            console.log(v)
+
             this.selected = v
         }
         checkedValue({item,isChecked}:any) {
@@ -110,6 +110,7 @@
             .cntTable{
                 width:100%;
                 th{text-align: center;padding-bottom:10px}
+
 
             }
         }

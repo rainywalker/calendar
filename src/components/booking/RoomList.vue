@@ -2,10 +2,12 @@
     <div class="roomList">
         <h2>객실선택</h2>
 
-        {{$store.state.booking.roomTypes}}
+<!--        {{$store.state.booking.roomTypes}}-->
+
         <ul class="lst">
-            <li v-for="item in listData.data" :key="item.id">
-                <room-type :item="item" :checked="$store.state.booking.roomTypes.includes(item)"></room-type>
+            <li v-for="item in listData" :key="item.id">
+
+                <room-type :item="item" :checked="GetterCheckedList.includes(item)"></room-type>
             </li>
         </ul>
 
@@ -13,10 +15,11 @@
 </template>
 
 <script lang="ts">
-    import {Component, Prop,Vue} from 'vue-property-decorator'
+    import {Component, Prop,Vue} from 'vue-property-decorator';
+    import {Getter} from 'vuex-class';
     import RoomType from '@/components/booking/RoomType.vue'
 
-
+    const namespace: string = 'booking';
     @Component({
         components : {
             RoomType,
@@ -24,6 +27,9 @@
     })
     export default class RoomList extends Vue {
         @Prop([Array, Object]) listData! : [] | object;
+        @Getter('getCheckdList',{namespace}) GetterCheckedList : any
+        @Getter('getRoomList', {namespace}) GetterRoomList : any;
+
 
         public checkRooms =  [
             { id: 0, text: 'filter_a' },

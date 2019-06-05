@@ -1,6 +1,5 @@
 <template>
     <div class="roomObject">
-
         <check-box :item="item" class="chk" :checked="checked" @change="checkedValue"></check-box>
         <div class="roomInfo">
             <div class="thumb">
@@ -78,6 +77,8 @@
             this.selected = v
         }
         checkedValue({item,isChecked}:any) {
+
+
             this.storeRoomTypeDeal({item,isChecked})
 
         }

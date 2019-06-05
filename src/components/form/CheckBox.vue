@@ -17,7 +17,7 @@
 
         @Emit('change')
         updatedValue(item : object, event : any) {
-            // this.$store.dispatch('updatedValue',{item,isChecked : event.target.checked})
+
             return {
                 item : item,
                 isChecked : event.target.checked

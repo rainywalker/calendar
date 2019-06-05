@@ -4,12 +4,18 @@ import { RoomTypesState } from '@/interface/store/roomTypes';
 
 export const mutations : MutationTree<RoomTypesState> = {
     rommTypeDeal(state, {item,isChecked}) {
-        if (isChecked) state.roomTypes.push(item);
+
+        if (isChecked) state.checkedArray.push(item);
         else {
-            const index : number = state.roomTypes.indexOf(item)
-            if (index >= 0) state.roomTypes.splice(index, 1)
+            const index : number = state.checkedArray.indexOf(item)
+            if (index >= 0) state.checkedArray.splice(index, 1)
         }
 
+    },
+    initLoad(state, {data, count}) {
+        state.totalCount = count;
+        state.roomTypes = data;
     }
+
 }
 

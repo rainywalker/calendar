@@ -1,16 +1,23 @@
 <template>
     <div id="reservedWrap">
         <calendar @select-func="selectFunc" />
-        <Room-list :listData="listData" />
+        {{$store.state.booking.checkedArray}}
+        <Room-list :listData="GetterRoomList" />
+        <div class="reserved">
+            <button type="button" @click="reserving">예약하기</button>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
+    import {Action, Getter} from 'vuex-class';
     import Calendar from '@/components/booking/Calendar.vue';
     import RoomList from '@/components/booking/RoomList.vue';
-    import axios from '@/lib/axios';
+
     import moment from 'moment';
+
+    const namespace: string = 'booking';
 
     @Component({
         components : {
@@ -19,34 +26,32 @@
         }
     })
     export default class Booking extends Vue {
+        @Action('initLoads',{namespace}) actionInitLoad : any;
+        @Getter('getRoomList', {namespace}) GetterRoomList : any;
+
         private dateString : string = moment().format('YYYY-MM-DD')
         private listData : Array<object> = [];
 
         created() {
-            this.initLoad()
+            this.actionInitLoad(this.dateString)
         }
         selectFunc(v : string) : void {
-
             this.dateString = v
-            this.initLoad()
+            this.actionInitLoad(this.dateString)
         }
-        async initLoad() {
-            try {
-                const result = await axios.get(`/properties/1/roomTypes?date=${this.dateString}`);
-                this.listData = result.data
+        reserving() {
 
-
-
-            }
-            catch (e) {
-
-            }
         }
+
+
 
 
     }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.reserved{
+    text-align: center;padding:15px 0;
+    button{font-size:15px;background: #d71b5f;color:#fff;padding:10px 15px;border-radius: 5px}
+}
 </style>

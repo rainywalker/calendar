@@ -10,6 +10,8 @@ import { RootState } from '@/interface/store/';
 
 export const state : RoomTypesState  = {
     roomTypes: [],
+    totalCount : 0,
+    checkedArray : []
 };
 
 const namespaced: boolean = true;

@@ -2,7 +2,6 @@ import { ActionTree } from 'vuex';
 import { RootState } from '@/interface/store/';
 import { RoomTypesState } from '@/interface/store/roomTypes';
 import axios from '@/lib/axios';
-import * as booking from '@/interface/booking';
 
 export const actions : ActionTree<RoomTypesState, RootState> = {
     async initLoads({commit},payload) {

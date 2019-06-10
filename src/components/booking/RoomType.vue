@@ -4,9 +4,9 @@
         <div class="roomInfo">
             <div class="thumb">
                 <figure class="centered">
-                    <img src="https://s3.ap-northeast-2.amazonaws.com/rekonition-img/iu_6.JPG" alt="">
+                    <img :src="item.photos[0].url" alt="">
                 </figure>
-                <button type="button" class="btn_more" @click="btnMore"><span class="blind">사진 더보기</span></button>
+                <button type="button" class="btn_more" @click="btnMore(item.photos)"><span class="blind">사진 더보기</span></button>
             </div>
             <dl class="specs">
                 <dt>{{item.name}}</dt>
@@ -74,8 +74,8 @@
             this.selected = v
         }
 
-        btnMore() {
-            console.log('x')
+        btnMore(arr : Array<object>) {
+            console.log(arr)
         }
         checkedValue({item,isChecked}:any) {
 

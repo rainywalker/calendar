@@ -15,6 +15,7 @@ export const mutations : MutationTree<RoomTypesState> = {
     initLoad(state, {data, count}) {
         state.totalCount = count;
         state.roomTypes = data;
+        state.checkedArray = [];
     }
 
 }

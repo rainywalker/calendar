@@ -2,11 +2,8 @@
     <div class="roomList">
         <h2>객실선택</h2>
 
-<!--        {{$store.state.booking.roomTypes}}-->
-
         <ul class="lst">
             <li v-for="item in listData" :key="item.id">
-
                 <room-type :item="item" :checked="GetterCheckedList.includes(item)"></room-type>
             </li>
         </ul>

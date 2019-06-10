@@ -34,7 +34,7 @@
             },
             {
                 label : '예약하기',
-                uri : '/reserved'
+                uri : '/booking'
             },
             {
                 label : '예약확인',

@@ -27,21 +27,31 @@
     })
     export default class Booking extends Vue {
         @Action('initLoads',{namespace}) actionInitLoad : any;
+
         @Getter('getRoomList', {namespace}) GetterRoomList : any;
         @Getter('getCheckdList',{namespace}) GetterCheckedList : any
 
         private dateString : string = moment().format('YYYY-MM-DD')
         private listData : Array<object> = [];
 
-        created() {
+        private created() {
             this.actionInitLoad(this.dateString)
         }
         selectFunc(v : string) : void {
-            this.dateString = v
+            this.dateString = v;
             this.actionInitLoad(this.dateString)
         }
         reserving() {
-            console.log(this.$store.state.booking)
+            if (this.$store.state.booking.checkedArray.length < 1) {
+                alert('선택하세요')
+                return false;
+            }
+            else {
+                this.$router.push({
+                    path : '/reserving',
+
+                })
+            }
         }
 
 

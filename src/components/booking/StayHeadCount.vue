@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue, Watch} from 'vue-property-decorator';
+    import {Component, Vue, Watch, Prop} from 'vue-property-decorator';
     import SelectBox from '@/components/form/SelectBox.vue';
 
     @Component({
@@ -22,18 +22,10 @@
         }
     })
     export default class StayHeadCount extends Vue{
+        @Prop({type:Object}) guests!:any;
+
         private selected : number = 1;
         public stayCountData = [1,2,3];
-
-        public guests = {
-            adult : '',
-            children : '',
-            infant : ''
-        };
-        @Watch('guests', { immediate: false, deep: true })
-        onChildChanged(val: any, oldVar : string) {
-            console.log(val.adult)
-        }
 
 
         stayCount(v : number) {

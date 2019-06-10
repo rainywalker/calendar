@@ -27,15 +27,10 @@
     })
     export default class RoomList extends Vue {
         @Prop([Array, Object]) listData! : [] | object;
-        @Getter('getCheckdList',{namespace}) GetterCheckedList : any
-        @Getter('getRoomList', {namespace}) GetterRoomList : any;
+        @Getter('getCheckdList',{namespace}) GetterCheckedList : any;
 
 
-        public checkRooms =  [
-            { id: 0, text: 'filter_a' },
-            { id: 1, text: 'filter_b' },
-            { id: 2, text: 'filter_c' },
-        ];
+
     }
 </script>
 

@@ -6,6 +6,7 @@
                 <figure class="centered">
                     <img src="https://s3.ap-northeast-2.amazonaws.com/rekonition-img/iu_6.JPG" alt="">
                 </figure>
+                <button type="button" class="btn_more" @click="btnMore"><span class="blind">사진 더보기</span></button>
             </div>
             <dl class="specs">
                 <dt>{{item.name}}</dt>
@@ -18,7 +19,7 @@
                 <dt>객실수</dt>
                 <dd>
                     <select-box v-model="selected" @input="roomCount">
-                        <option v-for="n in item.rate.availability" :key="n" :value="n">{{n}}개</option>
+                        <option v-for="n in item.availability" :key="n" :value="n">{{n}}개</option>
                     </select-box>
 
                 </dd>
@@ -34,11 +35,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <stay-head-count  v-for="n in selected" :key="n"></stay-head-count>
+                        <stay-head-count :guests="item.guest" v-for="n in selected" :key="n"></stay-head-count>
                     </tbody>
                 </table>
             </div>
-            <p class="totalPrice">{{item.rate.salePrice}}원</p>
+            <p class="totalPrice">{{item.salePrice}}원</p>
 
         </div>
     </div>
@@ -67,14 +68,14 @@
 
         @Mutation('rommTypeDeal',{namespace}) storeRoomTypeDeal : any;
 
-
-        private selected : number = 1;
-
-        public optionsValue = [1,2]
+        private selected : number = 1
 
         roomCount(v : number) {
-
             this.selected = v
+        }
+
+        btnMore() {
+            console.log('x')
         }
         checkedValue({item,isChecked}:any) {
 
@@ -99,6 +100,9 @@
                 .centered {
                     position: absolute; top: 0; left: 0; right: 0; bottom: 0; -webkit-transform: translate(50%,50%); -ms-transform: translate(50%,50%); transform: translate(50%,50%);
                     img{position: absolute; top: 0; left: 0; max-width: 100%; height: auto; -webkit-transform: translate(-50%,-50%); -ms-transform: translate(-50%,-50%); transform: translate(-50%,-50%);}
+                }
+                .btn_more{
+                    position: absolute;left:0;top:0;bottom:0;right: 0;z-index: 10;display: block;width:100%;box-sizing: border-box;
                 }
             }
             .specs{margin-left:20px}

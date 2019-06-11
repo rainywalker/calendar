@@ -1,9 +1,9 @@
 <template>
     <div class="roomList">
         <h2>객실선택</h2>
-
+        {{GetterCheckedList}}
         <ul class="lst">
-            <li v-for="item in listData" :key="item.id">
+            <li v-for="item in GetterRoomList" :key="item.id">
                 <room-type :item="item" :checked="GetterCheckedList.includes(item)"></room-type>
             </li>
         </ul>
@@ -23,8 +23,8 @@
         }
     })
     export default class RoomList extends Vue {
-        @Prop([Array, Object]) listData! : [] | object;
         @Getter('getCheckdList',{namespace}) GetterCheckedList : any;
+        @Getter('getRoomList', {namespace}) GetterRoomList : any;
 
 
 

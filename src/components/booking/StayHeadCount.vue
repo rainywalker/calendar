@@ -1,19 +1,20 @@
 <template>
     <tr class="stayHeadCount">
-        <td>
-            <select-box v-model="selected" @input="stayCount">
-                <option v-for="(v,i) in stayCountData" :key="i" :value="v">{{v}}박</option>
-            </select-box>
-        </td>
-        <td class="numberField"><input type="number" class="textField" v-model="guests.adult"></td>
-        <td class="numberField"><input type="number" class="textField" v-model="guests.children"></td>
-        <td class="numberField"><input type="number" class="textField" v-model="guests.infant"></td>
+            <td>
+                <select-box v-model="stayGuest.selectedDate" @input="stayCount">
+                    <option v-for="(v,i) in stayCountData" :key="i" :value="v">{{v}}박</option>
+                </select-box>
+            </td>
+            <td class="numberField"><input type="number" class="textField" v-model="stayGuest.guest.adult"></td>
+            <td class="numberField"><input type="number" class="textField" v-model="stayGuest.guest.children"></td>
+            <td class="numberField"><input type="number" class="textField" v-model="stayGuest.guest.infant"></td>
+            <td class="numberField">{{stayGuest.salePrice}}원</td>
     </tr>
 
 </template>
 
 <script lang="ts">
-    import {Component, Vue, Watch, Prop} from 'vue-property-decorator';
+    import {Component, Vue, Emit, Prop} from 'vue-property-decorator';
     import SelectBox from '@/components/form/SelectBox.vue';
 
     @Component({
@@ -22,15 +23,15 @@
         }
     })
     export default class StayHeadCount extends Vue{
-        @Prop({type:Object}) guests!:any;
+        @Prop(Object) stayGuest!:any;
 
-        private selected : number = 1;
         public stayCountData = [1,2,3];
 
+        @Emit('stayCount')
+        stayCount(v : number)  {
 
-        stayCount(v : number) {
-            console.log(v)
-            this.selected = v
+            this.stayGuest.selectedDate = v;
+            return this.stayGuest.selectedDate
         }
 
     }

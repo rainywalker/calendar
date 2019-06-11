@@ -1,8 +1,7 @@
 <template>
     <div id="reservedWrap">
         <calendar @select-func="selectFunc" />
-        {{GetterCheckedList}}
-        <Room-list :listData="GetterRoomList" />
+        <Room-list />
         <div class="reserved">
             <button type="button" @click="reserving">예약하기</button>
         </div>
@@ -28,11 +27,9 @@
     export default class Booking extends Vue {
         @Action('initLoads',{namespace}) actionInitLoad : any;
 
-        @Getter('getRoomList', {namespace}) GetterRoomList : any;
         @Getter('getCheckdList',{namespace}) GetterCheckedList : any
 
         private dateString : string = moment().format('YYYY-MM-DD')
-        private listData : Array<object> = [];
 
         private created() {
             this.actionInitLoad(this.dateString)

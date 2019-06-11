@@ -32,14 +32,16 @@
                         <th>성인</th>
                         <th>아동</th>
                         <th>유아</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                        <stay-head-count :guests="item.guest" v-for="n in selected" :key="n"></stay-head-count>
+                        <stay-head-count v-for="(val,i) in item.roomStayCountData" :stayGuest="val" :key="i" @stayCount="stayCount"></stay-head-count>
                     </tbody>
                 </table>
+
             </div>
-            <p class="totalPrice">{{item.salePrice}}원</p>
+<!--            <p class="totalPrice">{{item.salePrice}}원</p>-->
 
         </div>
     </div>
@@ -68,18 +70,48 @@
 
         @Mutation('rommTypeDeal',{namespace}) storeRoomTypeDeal : any;
 
-        private selected : number = 1
+        created() {
+            this.item.roomStayCountData = this.selectedStayGuest
+        }
+        private selected : number = 1;
+
+        public selectedStayGuestElement = {
+            guest : {
+                adult : '',
+                children : '',
+                infant :''
+            },
+            selectedDate : 1,
+            salePrice : this.item.salePrice
+        };
+        public selectedStayGuest : Object[] = [this.selectedStayGuestElement];
 
         roomCount(v : number) {
-            this.selected = v
-        }
 
+            this.selected = v;
+            const arr = []
+            for (let i=0; i<this.selected; i++) {
+                arr.push({
+                    guest : {
+                        adult : '',
+                        children : '',
+                        infant : ''
+                    },
+                    selectedDate : 1,
+                    salePrice : this.item.salePrice
+                })
+            }
+            this.item.roomStayCountData = [...arr]
+        }
+        stayCount(v: number) {
+
+            this.selectedStayGuestElement.selectedDate = v
+        }
         btnMore(arr : Array<object>) {
             console.log(arr)
         }
         checkedValue({item,isChecked}:any) {
-
-
+            console.log(item)
             this.storeRoomTypeDeal({item,isChecked})
 
         }

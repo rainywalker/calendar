@@ -27,11 +27,8 @@
 
         public stayCountData = [1,2,3];
 
-        @Emit('stayCount')
         stayCount(v : number)  {
-
             this.stayGuest.selectedDate = v;
-            return this.stayGuest.selectedDate
         }
 
     }

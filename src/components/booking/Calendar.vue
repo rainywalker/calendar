@@ -1,15 +1,7 @@
 <template>
     <div class="calendarWrap">
+        <calendar-ctrl :year="year" :dateCtx="dateCtx" :month="month" @chageMonth="chageMonth" />
         <div class="innerContent">
-
-            <div class="years">
-                <button type="button" class="btn prev" @click="chageMonth(-1)"><i class="fas fa-chevron-left"></i></button>
-                <div class="tx">
-                    <p>{{year}}</p>
-                    <p>{{month}}</p>
-                </div>
-                <button type="button" class="btn next" @click="chageMonth(1)"><i class="fas fa-chevron-right"></i></button>
-            </div>
             <ul class="weekdays">
                 <li v-for="(day,i) in days" :key="i">
                     <span class="days" :class="weekEnd(i)">{{day}}</span>
@@ -40,13 +32,18 @@
     import 'moment-lunar';
     import "moment/locale/ko";
     import * as calendar from '@/interface/calendar.ts';
+    import CalendarCtrl from '@/components/booking/CalendarCtrl.vue';
 
     const holidayData : calendar.holidayData = {
         solarDay : [101,301,505,606,815,1003,1009,1225],
         lunarDay : [1230,101,102,408,814,815,816]
     };
 
-    @Component
+    @Component({
+        components : {
+            CalendarCtrl
+        }
+    })
     export default class Calendar extends Vue {
 
 
@@ -188,12 +185,9 @@
     .week_holiday_solar,.week_holiday_lunar{color:#FF4141}
 
 
-    .years{
-        display:flex;justify-content:space-between;align-items:center;background: #d71b5f;color:#fff;text-align: center;padding:10px 20px;
-        .btn{display:inline-block;padding:5px;color:#fff;font-size: 20px}
-    }
+
     .weekdays{
-        display:flex;justify-content:space-between;background: rgba(215,27,95,.5);padding:10px 0;
+        display:flex;justify-content:space-between;background: rgba(215,27,95,.5);padding:15px 0;
         li{float:left;color:#fff;width:calc(100%/7);text-align: center;box-sizing: border-box}
     }
     .dates{

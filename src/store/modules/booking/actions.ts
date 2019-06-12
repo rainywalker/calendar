@@ -18,7 +18,7 @@ export const actions : ActionTree<RoomTypesState, RootState> = {
                     minOccupancy : v.minOccupancy,
                     roomSize : v.roomSize,
                     photos : v.photos,
-                    availability : 2,
+                    availability : v.rate.availability,
                     salePrice : v.rate.salePrice,
 
 

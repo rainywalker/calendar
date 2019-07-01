@@ -33,7 +33,7 @@
         p:first-child{margin-right:10px}
     }
     .btn{
-        display: block;width:30px;height:30px;border:1px solid #e5e5e5;
+        display: block;width:30px;height:30px;
         i{font-size: 1.3em;color:#53627e}
         &.prev{}
         &.next{}

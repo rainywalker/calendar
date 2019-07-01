@@ -34,7 +34,7 @@
             },
             {
                 label : '예약하기',
-                uri : '/booking'
+                uri : '/roomType'
             },
             {
                 label : '예약확인',
@@ -60,6 +60,6 @@
         transform: translateX(-5%);
     }
 .container{
-    max-width:1200px;margin:2% auto;
+    max-width:1440px;margin:2% auto;
 }
 </style>

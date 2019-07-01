@@ -16,12 +16,12 @@ export default new Router({
             component: Home
         },
         {
-            path: '/booking',
-            name: 'Booking',
+            path: '/roomType',
+            name: 'RoomType',
             // route level code-splitting
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
-            component: () => import(/* webpackChunkName: "Booking" */ './views/Booking.vue')
+            component: () => import(/* webpackChunkName: "roomType" */ './views/RoomType.vue')
         },
         {
             path: '/reserving',

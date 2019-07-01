@@ -12,6 +12,10 @@ export interface isHoliday extends i_weekObj{
     week_holiday_lunar : boolean,
     isActive? : boolean,
     disabled? : boolean
+    rangeDate? : boolean,
+    startDate?:boolean,
+    lastDate?:boolean
+
 }
 
 export interface dataInDays {

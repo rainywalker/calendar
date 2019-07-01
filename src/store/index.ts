@@ -14,7 +14,12 @@ export default new Vuex.Store<RootState>({
             propertyId : null,
             name : '',
             address : '',
-            telephones : []
+            phoneNumbers : [],
+            theme : {
+                name : '',
+                code : 0
+            },
+            notices : []
         }
     },
     mutations: {

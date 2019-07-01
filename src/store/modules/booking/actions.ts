@@ -6,8 +6,9 @@ import axios from '@/lib/axios';
 export const actions : ActionTree<RoomTypesState, RootState> = {
     async initLoads({commit},payload) {
         try {
-            const result = await axios.get(`/properties/1/roomTypes?date=${payload}`)
+            const result = await axios.get(`/properties/3002411/roomTypes?startDate=${payload}`)
             const data = result.data;
+            console.log(data)
             const arr : Array<object> = [];
 
             data.data.forEach((v:any) => {
@@ -18,7 +19,7 @@ export const actions : ActionTree<RoomTypesState, RootState> = {
                     minOccupancy : v.minOccupancy,
                     roomSize : v.roomSize,
                     photos : v.photos,
-                    availability : v.rate.availability,
+                    availability : 2,
                     salePrice : v.rate.salePrice,
 
 

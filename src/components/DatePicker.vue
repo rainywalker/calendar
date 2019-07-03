@@ -89,7 +89,7 @@
 
 
 
-            // if (this.checkInOut.checkIn === '' || this.checkInOut.checkOut === '') {
+            if (this.checkInOut.checkIn === '' || this.checkInOut.checkOut === '') {
                 if (item.disabled === false && this.checkInOut.isCheckOut === true) {
 
                     const chkInParse : number = parseInt(this.checkInOut.checkIn.replace(/[-]/g,''),10);
@@ -108,7 +108,7 @@
                     });
                     // return selectionArray
                 }
-            // }
+            }
 
 
         }

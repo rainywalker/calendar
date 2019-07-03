@@ -1,13 +1,13 @@
 <template>
     <div class="checkInOut">
+        {{checkInOut}}
         <dl>
             <dt>날짜</dt>
             <dd>
-                {{checkInOut}}
                 <div class="datePickerArea">
-                    <input type="text" class="datepicker" placeholder="년/월/일" ref="checkIn" v-model="checkInOut.checkIn" readonly @click="showHideCalendar(true)">
+                    <input type="text" class="datepicker" placeholder="년/월/일" ref="checkIn" v-model="checkInOut.checkIn" readonly @click="showHideCalendar('in')">
                     <span>-</span>
-                    <input type="text" class="datepicker" placeholder="년/월/일" ref="checkOut" v-model="checkInOut.checkOut" readonly @click="showHideCalendar(false)">
+                    <input type="text" class="datepicker" placeholder="년/월/일" ref="checkOut" v-model="checkInOut.checkOut" readonly @click="showHideCalendar('out')">
                 </div>
                 <date-picker
                         class="mini"
@@ -44,7 +44,11 @@
                 exclude.forEach((refName:string) => {
                     if (!clickedOnExcludedEl) {
                         const excludedEl = vnode.context.$refs[refName]
-                        clickedOnExcludedEl = excludedEl.contains(e.target)
+                        if (excludedEl !== undefined) {
+                            clickedOnExcludedEl = excludedEl.contains(e.target)
+                        }
+
+
                     }
                 });
 
@@ -77,40 +81,36 @@
         };
 
         public seen : boolean = false;
-        onClose () {
+
+        onClose (e:any) {
+
+            this.checkInOut.isCheckIn = false
+            this.checkInOut.isCheckOut = false
             this.seen = false
         }
 
-        selectFunc(obj : any) {
-            if (obj.isCheckIn) {
-                this.checkInOut.checkIn = obj.checkIn;
-                this.seen = false;
-                // (this.$refs.checkOut as HTMLElement).focus()
+        selectFunc(obj : checkInOut) {
 
+            obj.isCheckIn ? this.showHideCalendar('out') : this.checkInOut.isCheckOut = false;
 
-            }
-            else {
-                this.checkInOut.checkOut = obj.checkOut;
-                this.seen = false;
+            if (!this.checkInOut.isCheckIn && !this.checkInOut.isCheckOut) {
+                this.checkInOut.checkOut !== '' ? this.seen = false :  this.checkInOut.isCheckOut = true;
             }
 
         }
 
-        showHideCalendar(flag : boolean) {
+        showHideCalendar(str : string) {
 
+            this.seen = true;
 
-            if (flag) {
-                this.seen = true
+            if (str === 'in') {
                 this.checkInOut.isCheckIn = true
                 this.checkInOut.isCheckOut = false;
             }
             else {
-                this.seen = true
+                this.checkInOut.isCheckIn = false;
                 this.checkInOut.isCheckOut = true;
-                this.checkInOut.isCheckIn = false
-
             }
-
         }
 
     }

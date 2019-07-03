@@ -66,8 +66,8 @@
 
 
         initRangeSelection() {
-            const chkInParse = parseInt(this.startDate.replace(/[-]/g,''),10);
-            const overString = parseInt(this.endDate.replace(/[-]/g,''),10);
+            const chkInParse = parseInt(this.checkInOut.checkIn.replace(/[-]/g,''),10);
+            const overString = parseInt(this.checkInOut.checkOut.replace(/[-]/g,''),10);
 
             // const bFromA = moment.duration(moment(moment(item.fullString)).diff(this.checkIn)).days();
 
@@ -86,23 +86,30 @@
         }
 
         rangeSelection(item:any) {
-            if (this.checkInOut.checkIn === '' || this.checkInOut.checkOut === '') {
+
+
+
+            // if (this.checkInOut.checkIn === '' || this.checkInOut.checkOut === '') {
                 if (item.disabled === false && this.checkInOut.isCheckOut === true) {
 
-                    const chkInParse : number = parseInt(this.startDate.replace(/[-]/g,''),10);
-                    const overString : number = parseInt(item.fullString.replace(/[-]/g,''),10)
+                    const chkInParse : number = parseInt(this.checkInOut.checkIn.replace(/[-]/g,''),10);
+                    const overString : number = parseInt(item.fullString.replace(/[-]/g,''),10);
 
-                    // const bFromA = moment.duration(moment(moment(item.fullString)).diff(this.checkIn)).days();
-                    const selectionArray : Array<calendar.dataInDays>  = this.daysInMonth.filter((v:any) => {
+
+
+                    //
+                    // // const bFromA = moment.duration(moment(moment(item.fullString)).diff(this.checkIn)).days();
+                    this.daysInMonth.filter((v:any) => {
                         const fullStringParse : number =  parseInt(v.fullString.replace(/[-]/g,''),10);
                         if (chkInParse <= overString && fullStringParse <= overString && fullStringParse > chkInParse) {
                             v.endDate === true ? v.endDate = false : v.endDate = true;
                             return v
                         }
                     });
-                    return selectionArray
+                    // return selectionArray
                 }
-            }
+            // }
+
 
         }
         startOver(item : any,e :any) {
@@ -111,21 +118,16 @@
 
         @Emit()
         selectFunc(item : any) : string {
-            if (this.checkInOut.isCheckIn) {
-                this.checkInOut.checkIn = item.fullString;
-            }
-            else {
-                this.checkInOut.checkOut = item.fullString;
-            }
+
+            this.checkInOut.isCheckIn ? this.checkInOut.checkIn = item.fullString : this.checkInOut.checkOut = item.fullString;
 
             const chkInNumber : number = parseInt(this.checkInOut.checkIn.replace(/[-]/g,''),10)
             const chkOutNumber : number = parseInt(this.checkInOut.checkOut.replace(/[-]/g,''),10)
 
             if (chkInNumber > chkOutNumber || this.checkInOut.checkIn === '') {
                 this.checkInOut.checkIn = this.checkInOut.checkOut;
-                this.checkInOut.checkOut = ''
+                this.checkInOut.checkOut = '';
             }
-
             return this.checkInOut
         }
 
@@ -231,8 +233,8 @@
 
                 arr.push({
                     lastDate : false,
-                    endDate : this.endDate === dateCtxFormat,
-                    startDate : this.startDate === dateCtxFormat,
+                    endDate : this.checkInOut.checkOut === dateCtxFormat,
+                    startDate : this.checkInOut.checkIn === dateCtxFormat,
                     lunarCalendar : parseInt(lunar_stringExtract.substr(1)),
                     solarCalendar : parseInt(solar_stringExtract.substr(1)),
                     fullString : dateCtxFormat,

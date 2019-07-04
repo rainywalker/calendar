@@ -91,6 +91,9 @@
 
         selectFunc(obj : checkInOut) {
 
+            const chkInNumber : number = parseInt(obj.checkIn.replace(/[-]/g,''),10)
+            const chkOutNumber : number = parseInt(obj.checkOut.replace(/[-]/g,''),10)
+
             obj.isCheckIn ? this.showHideCalendar('out') : this.checkInOut.isCheckOut = false;
 
             if (!this.checkInOut.isCheckIn && !this.checkInOut.isCheckOut) {

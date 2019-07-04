@@ -27,7 +27,7 @@
 
 <style scoped lang="scss">
 .years{
-    display: flex;justify-content: center;font-size: 20px;margin-bottom:40px;
+    display: flex;justify-content: center;font-size: 20px;margin-bottom:20px;
     .tx{
         display: flex;margin:0 20px;align-items: center;
         p:first-child{margin-right:10px}

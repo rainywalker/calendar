@@ -5,9 +5,10 @@
             <dt>날짜</dt>
             <dd>
                 <div class="datePickerArea">
-                    <input type="text" class="datepicker" placeholder="년/월/일" ref="checkIn" v-model="checkInOut.checkIn" readonly @click="showHideCalendar('in')">
+
+                    <input type="text" class="datepicker" placeholder="체크인" ref="checkIn" v-model="checkInOut.checkIn" readonly @click="showHideCalendar('in')">
                     <span>-</span>
-                    <input type="text" class="datepicker" placeholder="년/월/일" ref="checkOut" v-model="checkInOut.checkOut" readonly @click="showHideCalendar('out')">
+                    <input type="text" class="datepicker" placeholder="체크아웃" ref="checkOut" v-model="checkInOut.checkOut" readonly @click="showHideCalendar('out')">
                 </div>
                 <date-picker
                         class="mini"
@@ -123,4 +124,5 @@
 
 <style scoped lang="scss">
     .mini{width:400px;min-height:150px}
+    .datepicker{border:1px solid #a1a1a1;height:40px;width:150px;color:#666;border-radius: 2px;box-sizing: border-box;font-size: 15px;padding:0 10px}
 </style>

@@ -34,12 +34,6 @@
     import * as calendar from '@/interface/calendar.ts';
     import CalendarCtrl from '@/components/booking/CalendarCtrl.vue';
 
-    const holidayData : calendar.holidayData = {
-        solarDay : [101,301,505,606,815,1003,1009,1225],
-        lunarDay : [1230,101,102,408,814,815,816]
-    };
-
-
     @Component({
         components : {
             CalendarCtrl
@@ -47,11 +41,11 @@
     })
     export default class DatePicker extends Vue {
         @Prop(Object) checkInOut!:any;
+        @Prop(Array) days!:Array<string>;
+        @Prop(Object) holidayData!:any
 
         private dateCtx : any = moment();
         private today : any = moment();
-
-        public days : Array <string> = ['일', '월', '화', '수', '목', '금', '토'];
 
         public startDate : string =  this.checkInOut.checkIn;
         public endDate : string =  this.checkInOut.checkOut;
@@ -66,8 +60,6 @@
         initRangeSelection() {
             const chkInParse = parseInt(this.checkInOut.checkIn.replace(/[-]/g,''),10);
             const overString = parseInt(this.checkInOut.checkOut.replace(/[-]/g,''),10);
-
-            // const bFromA = moment.duration(moment(moment(item.fullString)).diff(this.checkIn)).days();
 
             const selection : any = this.daysInMonth.filter((v:any) => {
                 const fullStringParse =  parseInt(v.fullString.replace(/[-]/g,''),10);
@@ -85,19 +77,12 @@
 
         rangeSelection(item:any) {
 
-
-
             if ( this.checkInOut.checkOut === '') {
                 if (item.disabled === false && this.checkInOut.isCheckOut === true) {
 
                     const chkInParse : number = parseInt(this.checkInOut.checkIn.replace(/[-]/g,''),10);
-                    const chkOutNumber : number = parseInt(this.checkInOut.checkOut.replace(/[-]/g,''),10)
                     const overString : number = parseInt(item.fullString.replace(/[-]/g,''),10);
 
-
-
-                    //
-                    // // const bFromA = moment.duration(moment(moment(item.fullString)).diff(this.checkIn)).days();
                     this.daysInMonth.filter((v:any) => {
 
                         const fullStringParse : number =  parseInt(v.fullString.replace(/[-]/g,''),10);
@@ -107,12 +92,8 @@
                         }
 
                     });
-                    // return selectionArray
                 }
             }
-
-
-
 
         }
         startOver(item : any,e :any) {
@@ -187,20 +168,8 @@
             return this.today.format('DD');
         }
         get firstDayOfMonth() : number {
-            const arr = [];
             let firstDay = moment(this.dateCtx).subtract((parseInt(this.currentDate,10) - 1), 'days');
 
-
-
-
-            // let dateFrom = parseInt(moment(this.dateCtx).subtract(1,'months').endOf('month').format('D'))
-            //
-            // let len = dateFrom-firstDay.weekday();
-            // for (dateFrom; dateFrom>len  ;dateFrom--) {
-            //     arr.push(dateFrom)
-            // }
-
-            // return arr.reverse()
             return firstDay.weekday();
         }
 
@@ -229,12 +198,8 @@
                 const currentDate : string = `${this.year}-${this.month}-${i+1}`;
                 const ctx : any = moment(currentDate,'YYYYMDD');
                 const dateCtxFormat : string = this.dateCtx.format('Y-MM-'+idx);
-
-
-
                 const lunar_stringExtract : string = ctx.lunar().format('YYYYMDD').substring(4);
                 const solar_stringExtract : string = ctx.solar().format('YYYYMDD').substring(4);
-
 
                 solarArray.push(solar_stringExtract);
                 lunarArray.push(lunar_stringExtract);
@@ -263,8 +228,8 @@
                 }).filter((v : number | undefined) => v !== undefined)
             };
 
-            const solarMatch : Array <number> = holidayMatch(solarArray,holidayData.solarDay);
-            const lunarMatch : Array <number> = holidayMatch(lunarArray,holidayData.lunarDay);
+            const solarMatch : Array <number> = holidayMatch(solarArray,this.holidayData.solarDay);
+            const lunarMatch : Array <number> = holidayMatch(lunarArray,this.holidayData.lunarDay);
 
             arr.forEach((v:any) => {
                 v.holidaySolar = solarMatch;
@@ -272,7 +237,6 @@
             });
             this.daysArray = [...arr]
             return this.daysArray
-            // return this.dateCtx.daysInMonth();
         }
 
 

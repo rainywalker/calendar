@@ -15,7 +15,7 @@
                           exclude: ['checkIn','checkOut'],
                           handler: 'onClose'
                         }"
-                        v-if="seen" @select-func="selectFunc"  :checkInOut="checkInOut"></date-picker>
+                        v-if="seen" @select-func="selectFunc" :days="days" :holidayData="holidayData" :checkInOut="checkInOut"></date-picker>
             </dd>
         </dl>
     </div>
@@ -24,6 +24,7 @@
 <script lang="ts">
     import {Vue, Component} from 'vue-property-decorator'
     import DatePicker from '@/components/DatePicker.vue';
+    import * as calendar from '@/interface/calendar.ts';
 
     interface checkInOut {
         isCheckIn : boolean,
@@ -47,8 +48,6 @@
                         if (excludedEl !== undefined) {
                             clickedOnExcludedEl = excludedEl.contains(e.target)
                         }
-
-
                     }
                 });
 
@@ -64,7 +63,11 @@
             document.removeEventListener('click', handleOutsideClick)
             document.removeEventListener('touchstart', handleOutsideClick)
         }
-    })
+    });
+    const holidayData : calendar.holidayData = {
+        solarDay : [101,301,505,606,815,1003,1009,1225],
+        lunarDay : [1230,101,102,408,814,815,816]
+    };
 
     @Component({
         components : {
@@ -81,25 +84,21 @@
         };
 
         public seen : boolean = false;
+        public days : Array <string> = ['일', '월', '화', '수', '목', '금', '토'];
+        public holidayData : calendar.holidayData = holidayData;
 
-        onClose (e:any) {
-
-            this.checkInOut.isCheckIn = false
-            this.checkInOut.isCheckOut = false
+        onClose () {
+            this.checkInOut.isCheckIn = false;
+            this.checkInOut.isCheckOut = false;
             this.seen = false
         }
 
         selectFunc(obj : checkInOut) {
-
-            const chkInNumber : number = parseInt(obj.checkIn.replace(/[-]/g,''),10)
-            const chkOutNumber : number = parseInt(obj.checkOut.replace(/[-]/g,''),10)
-
             obj.isCheckIn ? this.showHideCalendar('out') : this.checkInOut.isCheckOut = false;
 
             if (!this.checkInOut.isCheckIn && !this.checkInOut.isCheckOut) {
                 this.checkInOut.checkOut !== '' ? this.seen = false :  this.checkInOut.isCheckOut = true;
             }
-
         }
 
         showHideCalendar(str : string) {
